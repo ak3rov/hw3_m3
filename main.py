@@ -4,6 +4,7 @@ from aiogram.dispatcher.filters import Text
 import logging
 
 from config import dp
+from db.base import db_init, delete_tables, create_tables, populate_products
 from handlers.echo import picture, myinfo
 from handlers.start import (
     start,
@@ -19,6 +20,14 @@ from handlers.user_info_fsm import (
     mail,
     not_mail
 )
+
+async def startup(_):
+    db_init()
+    delete_tables ()
+    create_tables()
+    populate_products ()
+
+
 
 if __name__ == "__main__":
     print(__name__)
