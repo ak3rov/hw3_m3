@@ -1,5 +1,5 @@
 import string
-import to_json
+import json
 from aiogram import types, bot
 from aiogram.types import CallbackQuery
 
@@ -42,7 +42,7 @@ async def check_bad_words(message: types.Message):
             if {i.lower().translate(str.maketrans('', '', string.punctuation)) for i in message.text.split(' ')} \
                     .intersection(set(json.load(open('cenz.json')))) != set():
                 await message.reply(
-                    f'kik user {message.from_user.first_name} using bad words?',
+                    f'кикнуть пользователя {message.from_user.first_name} за иcпользование нехороших слов?',
                     reply_markup=kb
                 )
 
@@ -57,12 +57,12 @@ async def ban_user(callback: CallbackQuery):
     abuser_id = callback.data.replace('abuser_id=', '')
     if callback.from_user.id in admin_id_count:
         await message.bot.ban_chat_member(
-            text=f'{callback.from_user.first_name} kiked {abuser_id}',
+            text=f'{callback.from_user.first_name} кикнул {abuser_id}',
             user_id=abuser_id
         )
     else:
         await message.bot.send_message(
-            text=f'{callback.from_user.first_name} u cant kik user!',
+            text=f'{callback.from_user.first_name} у тебя нет прав для бана!',
             chat_id=message.chat.id
         )
 
@@ -77,16 +77,11 @@ async def ban_user_warning(callback: CallbackQuery):
     abuser_name_warning = callback.data.replace('abuser_name_warning=', '')
     if callback.from_user.id in admin_id_count:
         await message.bot.send_message(
-            text=f'{abuser_name_warning} dont type bad words,else u been banned!',
+            text=f'{abuser_name_warning} не пиши плохие слова в чат иначе в следующий раз тебя забанят!',
             chat_id=message.chat.id
         )
     else:
         await message.bot.send_message(
-            text=f'{callback.from_user.first_name} u cant ban!',
+            text=f'{callback.from_user.first_name} у тебя нет прав для бана!',
             chat_id=message.chat.id
         )
-
-
-# @dp.callback_query_handler(text=("abuser_id", "abuser_name_warning"))
-# async def call_main_menu(call: CallbackQuery):
-#     await bot.delete_message(chat_id=call.from_user.id, message_id=call.message.message_id)

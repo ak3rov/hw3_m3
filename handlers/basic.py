@@ -13,18 +13,18 @@ kb.add(types.InlineKeyboardButton(
 ))
 
 
-# @dp.message_handler(commands=["start"])
+# @db.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
     await message.answer(
         f"""
             Доброго времени {message.from_user.full_name}!
-        Мы HR компания puma !
+        Мы HR компания BAUMAN !
         """,
         reply_markup=kb
     )
     await message.delete()
 
-# @dp.message_handler(commands=["help"])
+# @db.message_handler(commands=["help"])
 async def cmd_help(message: types.Message):
     await message.answer(
         f"""
@@ -36,7 +36,7 @@ async def cmd_help(message: types.Message):
     )
 
 
-# @dp.message_handler(commands=["myinfo"])
+# @db.message_handler(commands=["myinfo"])
 async def cmd_myinfo(message: types.Message):
     await message.answer(
         f"ID         {message.from_user.id}\n"
@@ -45,9 +45,9 @@ async def cmd_myinfo(message: types.Message):
     )
 
 
-# @dp.message_handler(commands=["picture"])
+# @db.message_handler(commands=["picture"])
 async def cmd_picture(message: types.Message):
-    img = ["watch.png", "watch.png", "70119eba3b9c1aaf0cc490012ccdf90a.jpg"]
+    img = ["img/img_1.png", "img/img_2.png", "img/img_3.png"]
     photo = open(random.choice(img), "rb")
     await message.answer_photo(
         photo

@@ -1,29 +1,62 @@
+import random
+
 from aiogram import types
 
+kb = types.InlineKeyboardMarkup()
+kb.add(types.InlineKeyboardButton(
+    text="О нас",
+    callback_data="products"
+))
+kb.add(types.InlineKeyboardButton(
+    text="Наш адрес:",
+    callback_data="address"
+))
 
+
+# @db.message_handler(commands=["start"])
 async def start(message: types.Message):
-    user = message.from_user.first_name
-    buttons = [
-        types.InlineKeyboardButton(text="Посетите наш веб сайт!",
-                                   url="https://geektech.kg"),
-        types.InlineKeyboardButton(text="Приходите к нам в гости!",
-                                   url="https://go.2gis.com/9d01se")
-    ]
-    kb = types.InlineKeyboardMarkup(row_width=1)
-    kb.add(*buttons)
+    user = message.from_user.full_name
     await message.answer(
-        f'Привет, {user}',
+        f'Приветствуем, {user}!\n')
+    await message.reply(
+        f'Выберите команду:',
         reply_markup=kb
     )
 
 
-async def cmd_help(message: types.Message):
+# @db.message_handler(commands=["help"])
+async def help(message: types.Message):
     await message.answer(
         """
-        /start - for start
-    /help - u a here
-    /myinfo - ur inf
-    /picture - random cat
-    /products - our curses
+        /start - Старт
+/help - Список команд:
+/myinfo - Данные пользователя
+/gallery - random photos
+/aboutus - О нас
         """
     )
+
+
+# @db.message_handler(commands=["myinfo"])
+async def myinfo(message: types.Message):
+    user = message.from_user.full_name
+    user_id = message.from_user.id
+    first_name = message.from_user.first_name
+    last_name = message.from_user.last_name
+    await message.answer(
+        f'Username: {user}\n'
+        f'User ID: {user_id}\n'
+        f'User first name: {first_name}\n'
+        f'User last name: {last_name}\n'
+    )
+    # await message.delete()
+
+
+# @db.message_handler(commands=["picture"])
+async def gallery(message: types.Message):
+    photos = ['images_rnd/book1.jpeg', 'images_rnd/book2.jpeg', 'images_rnd/book3.jpeg', 'images_rnd/book4.jpeg']
+    with open(random.choice(photos), 'rb') as photos:
+        await message.answer_photo(
+            photo=photos,
+            caption='books'
+        )

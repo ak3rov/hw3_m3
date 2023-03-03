@@ -6,10 +6,10 @@ from aiogram import types
 async def picture(message: types.Message):
     images = listdir("images")
     image = choice(images)
-    with open(f"images/{image}", "rb") as randomx:
+    with open(f"images/{image}", "rb") as cat:
         await message.answer_photo(
-            photo=randomx,
-            caption='random img'
+            photo=cat,
+            caption='лови котика!'
         )
 
 

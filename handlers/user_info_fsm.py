@@ -13,7 +13,7 @@ class UserForm(StatesGroup):
 
 async def start_user_dialog(message: types.Message):
     await UserForm.name.set()
-    await message.answer("whats ur name?")
+    await message.answer("Как вас зовут?")
 
 
 async def process_name(message: types.Message, state: FSMContext):
@@ -22,20 +22,20 @@ async def process_name(message: types.Message, state: FSMContext):
         data['name'] = message.text
 
     await UserForm.next()
-    await message.answer("how old a u?")
+    await message.answer("Сколько вам лет?")
 
 
 async def process_age(message: types.Message, state: FSMContext):
     age = message.text
     if not age.isnumeric():
-        await message.reply("only nums")
+        await message.reply("Вводите только цифры")
     else:
         async with state.proxy() as data:
             # сохраняем данные о возрасте
             data['age'] = age
 
     await UserForm.next()
-    await message.answer("ur addres?")
+    await message.answer("Какой у вас адрес?")
 
 
 async def process_address(message: types.Message, state: FSMContext):
@@ -43,12 +43,12 @@ async def process_address(message: types.Message, state: FSMContext):
         # сохраяем данные о адресе
         data['address'] = message.text
         kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        buttons = ["mon", "tus", "wen", "thurs", "fri", "sut"]
+        buttons = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
         kb.add(*buttons)
 
     await UserForm.next()
-    await message.answer("when you can come to us?\n"
-                         "we working at: mon-sat, sunday is day off", reply_markup=kb)
+    await message.answer("В какой день недели вам удобно получить товар?\n"
+                         "Мы работаем пн-сб, воскресенье выходной", reply_markup=kb)
 
 
 async def process_day(message: types.Message, state: FSMContext):
@@ -64,7 +64,7 @@ async def process_day(message: types.Message, state: FSMContext):
         print(data)
 
     await state.finish()
-    await message.answer("thanks for using our cervise, u want to sand message?",
+    await message.answer("Спасибо за то что пользуетесь нашим сервисом, вы хотите оставить сообщение?",
                          reply_markup=kb)
 
 
@@ -75,7 +75,7 @@ async def mail(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
     await message.bot.send_message(
-        text=f'{callback.from_user.first_name} we send your message to admin!',
+        text=f'{callback.from_user.first_name} мы передадим твое сообщение админам!',
         chat_id=message.chat.id
     )
 
@@ -87,6 +87,6 @@ async def not_mail(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
     await message.bot.send_message(
-        text=f'{callback.from_user.first_name} good bye!',
+        text=f'{callback.from_user.first_name} до свидания!',
         chat_id=message.chat.id
     )
