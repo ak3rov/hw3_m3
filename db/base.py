@@ -43,10 +43,25 @@ def delete_tables():
 
 def populate_products():
     cur.execute("""INSERT INTO products (name, price, photo) VALUES
-                            ('The tehno 1', 500, 'imagess/divan.jpg'),
-                            ('The tehno 2', 600, 'imagess/razmer.jpg'),
-                            ('The tehno 3', 700, 'imagess/shkaf.jpg') 
+                            ('The Witcher book 1', 500, 'images/witcher1.jpeg'),
+                            ('The Witcher book 2', 600, 'images/witcher2.jpeg'),
+                            ('The Witcher book 3', 700, 'images/witcher3.jpeg') 
                             """)
+    db.commit()
+
+
+def create_order(data):
+    data = data.as_dict()
+    print(data)
+    cur.execute(
+        """INSERT INTO orders(product_id, user_name, address) VALUES(
+        :product_id,
+        :user_name,
+        :address)""",
+        {'product_id':data['product_id'],
+        'user_name':data['name'],
+        'address':data['address']}
+    )
     db.commit()
 
 

@@ -6,8 +6,8 @@ from aiogram.dispatcher.filters import Text
 
 from config import dp, scheduler
 from db.base import (db_init, create_tables, populate_products, delete_tables, get_products)
-from handlers.estatedp import grafik, catalog
-from handlers.notifier import (UserText, start_reminder, process_text)
+from handlers.estatedb import grafik, catalog
+from handlers.notifier import (UserText, start_reminder)
 from handlers.products import (show_products, region, address)
 from handlers.start import (start, help, myinfo, gallery)
 from handlers.user_info_fsm import (
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     dp.register_callback_query_handler(not_mail, Text(startswith="no"))
 
     dp.register_message_handler(start_reminder, commands=["notify"])
-    dp.register_message_handler(process_text, state=UserText.text)
+    #dp.register_message_handler(process_text, state=UserText.text)
     # dp.register_message_handler(notify_command_handler, commands=["notify"])
     # dp.register_message_handler(notify, commands=["notify"])
 
